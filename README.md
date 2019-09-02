@@ -1,14 +1,4 @@
-<p align="center">
-  <img src="https://www.corda.net/wp-content/uploads/2016/11/fg005_corda_b.png" alt="Corda" width="500">
-</p>
-
-# CorDapp Template - Kotlin
-
-Welcome to the Kotlin CorDapp template. The CorDapp template is a stubbed-out CorDapp that you can use to bootstrap 
-your own CorDapps.
-
-**This is the Kotlin version of the CorDapp template. The Java equivalent is 
-[here](https://github.com/corda/cordapp-template-java/).**
+# CorDapp Demo
 
 # Pre-Requisites
 
@@ -38,45 +28,23 @@ and set the run directory to the project root directory for each test.
 
 See https://docs.corda.net/tutorial-cordapp.html#running-the-example-cordapp.
 
-## Interacting with the nodes
+```
+./gradlew clean deployNodes
+```
 
-### Shell
+To start the nodes on Mac/Linux run the following command: `build/nodes/runnodes`
 
-When started via the command line, each node will display an interactive shell:
+To run flows in your CorDapp, enter the following flow command from any non-notary terminal window:
 
-    Welcome to the Corda interactive shell.
-    Useful commands include 'help' to see what is available, and 'bye' to shut down the node.
-    
-    Tue Nov 06 11:58:13 GMT 2018>>>
+```
+``flow start CarIssueInitiator owningBank: BankofAmerica, holdingDealer: Dealership, manufacturer: Manufacturer, vin: "abc", licensePlateNumber: "abc1234", make: "Honda", model: "Civic", dealershipLocation: "NYC"``
+```
 
-You can use this shell to interact with your node. For example, enter `run networkMapSnapshot` to see a list of 
-the other nodes on the network:
+To check that the state was correctly issued, query the node using the following command:
 
-    Tue Nov 06 11:58:13 GMT 2018>>> run networkMapSnapshot
-    [
-      {
-      "addresses" : [ "localhost:10002" ],
-      "legalIdentitiesAndCerts" : [ "O=Notary, L=London, C=GB" ],
-      "platformVersion" : 3,
-      "serial" : 1541505484825
-    },
-      {
-      "addresses" : [ "localhost:10005" ],
-      "legalIdentitiesAndCerts" : [ "O=PartyA, L=London, C=GB" ],
-      "platformVersion" : 3,
-      "serial" : 1541505382560
-    },
-      {
-      "addresses" : [ "localhost:10008" ],
-      "legalIdentitiesAndCerts" : [ "O=PartyB, L=New York, C=US" ],
-      "platformVersion" : 3,
-      "serial" : 1541505384742
-    }
-    ]
-    
-    Tue Nov 06 12:30:11 GMT 2018>>> 
-
-You can find out more about the node shell [here](https://docs.corda.net/shell.html).
+```
+run vaultQuery contractStateType: com.template.states.CarState
+```
 
 ### Client
 
@@ -129,14 +97,3 @@ The static webpage is served on:
 While the sole template endpoint is served on:
 
     http://localhost:10050/templateendpoint
-    
-# Extending the template
-
-You should extend this template as follows:
-
-* Add your own state and contract definitions under `contracts/src/main/kotlin/`
-* Add your own flow definitions under `workflows/src/main/kotlin/`
-* Extend or replace the client and webserver under `clients/src/main/kotlin/`
-
-For a guided example of how to extend this template, see the Hello, World! tutorial 
-[here](https://docs.corda.net/hello-world-introduction.html).
